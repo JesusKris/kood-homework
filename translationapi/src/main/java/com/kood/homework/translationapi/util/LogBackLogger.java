@@ -43,7 +43,7 @@ public class LogBackLogger implements ProjectLogger {
                 break;
         
             default:
-                logger.info(message);
+                logger.warn("No explicit logger level set, please always set the logger level for accurate logging.");
                 break;
         }
     }
