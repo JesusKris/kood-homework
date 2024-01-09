@@ -1,0 +1,45 @@
+<configuration>
+
+    <import class="ch.qos.logback.core.ConsoleAppender" />
+    
+
+    <property name="defaultLogLevel" value="INFO" />
+
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <springProfile name="dev">
+        <property name="defaultLogLevel" value="DEBUG" />
+    </springProfile>
+
+
+    <springProfile name="production">
+        <property name="defaultLogLevel" value="INFO" />
+
+        <appender name="CONSOLE" class="ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                <providers>
+                    <timestamp />
+                    <logLevel />
+                    <message />
+                    <throwableMessage/>
+                    <rootStackTraceElement/>
+                    <stackHash/>
+                    
+                </providers>
+            </encoder>
+        </appender>
+
+    </springProfile>
+
+    <!-- Use the configured log level -->
+    <root level="${defaultLogLevel}">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>
