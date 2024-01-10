@@ -1,8 +1,10 @@
 package com.kood.homework.translationapi.util;
 
+
 import java.lang.System.Logger.Level;
 import org.slf4j.LoggerFactory;
 import com.kood.homework.translationapi.model.ProjectLogger;
+
 
 /**
  * A logger class which uses {@link org.slf4j.Logger} under the hood.
@@ -15,9 +17,11 @@ public class LogBackLogger implements ProjectLogger {
 
     private final org.slf4j.Logger logger;
 
+    
     public LogBackLogger(Class<?> clazz) {
         this.logger = LoggerFactory.getLogger(clazz);
     }
+
 
     @Override
     public void log(Level level, String message) {
@@ -49,6 +53,7 @@ public class LogBackLogger implements ProjectLogger {
         }
     }
 
+
     @Override
     public void log(Level level, String message, Throwable throwable) {
         switch (level) {
@@ -73,7 +78,7 @@ public class LogBackLogger implements ProjectLogger {
                 break;
 
             default:
-                logger.info(message, throwable);
+                logger.warn("No explicit logger level set, please always set the logger level for accurate logging.", throwable);
                 break;
         }
     }
