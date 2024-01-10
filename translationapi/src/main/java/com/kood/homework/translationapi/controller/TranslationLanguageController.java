@@ -1,5 +1,6 @@
 package com.kood.homework.translationapi.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -7,17 +8,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.kood.homework.translationapi.model.ApiResponse;
 import com.kood.homework.translationapi.model.ErrorResponse;
 import com.kood.homework.translationapi.model.SuccessResponse;
 import com.kood.homework.translationapi.model.TranslationLanguageParameter;
-import com.kood.homework.translationapi.service.DeepLTranslatorService;
+import com.kood.homework.translationapi.service.DeeplTranslatorService;
 import com.kood.homework.translationapi.util.IpRateLimiter;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+
+/**
+ * Controller handling requests related to supported translation languages.
+ * 
+ * <p>
+ * <strong>Author:</strong> JesusKris
+ * </p> 
+ */
 @RestController
 @RequestMapping("/api/translate/languages")
 public class TranslationLanguageController {
@@ -26,30 +33,40 @@ public class TranslationLanguageController {
     private IpRateLimiter ipRateLimiter;
 
     @Autowired
-    private DeepLTranslatorService deepLTranslatorService;
+    private DeeplTranslatorService deepLTranslatorService;
 
-    @Value("${api.version}")
+    @Value("${translation.api.version}")
     private String apiVersion;
 
-    private final int availableLanguagesRateLimit = 25;
+    @Value("${translation.api.language.ratelimit}")
+    private int availableLanguagesRateLimit;
 
+
+    /**
+     * Endpoint to get the supported translation languages.
+     *
+     * @param request  The HTTP servlet request.
+     * @param response The HTTP servlet response.
+     * @return ResponseEntity containing the API response.
+     */
     @GetMapping
-    public ResponseEntity<ApiResponse> getSupportedLanguages(HttpServletRequest request,
-            HttpServletResponse response) {
+    public ResponseEntity<ApiResponse> getSupportedLanguages(HttpServletRequest request, HttpServletResponse response) {
 
         String ipAddress = request.getRemoteAddr();
-        try {
 
+        try {
             if (!ipRateLimiter.tryAcquire("/api/language", ipAddress, availableLanguagesRateLimit)) {
                 return new ResponseEntity<ApiResponse>(new ErrorResponse(HttpStatus.TOO_MANY_REQUESTS,
                         "Rate limit exceeded. Current rate limit: "
                                 + String.valueOf(availableLanguagesRateLimit),
                         getUriWithParameters(request), apiVersion).toJson(), null);
             }
+            
 
             TranslationLanguageParameter languageRequest = new TranslationLanguageParameter(request.getParameter("type"));
 
-            Object availableLanguages = deepLTranslatorService.getAvailaableLanguages(languageRequest);
+            Object availableLanguages = deepLTranslatorService.getAvailableLanguages(languageRequest);
+
 
             SuccessResponse successResponse = new SuccessResponse(HttpStatus.OK,
                     "Successfully returned available languages for type: "
@@ -60,12 +77,14 @@ public class TranslationLanguageController {
 
             return new ResponseEntity<ApiResponse>(successResponse.toJson(), HttpStatus.OK);
 
+
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<ApiResponse>(
                     new ErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(),
                             getUriWithParameters(request),
                             apiVersion).toJson(),
                     HttpStatus.BAD_REQUEST);
+
 
         } catch (Exception e) {
             return new ResponseEntity<ApiResponse>(
