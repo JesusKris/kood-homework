@@ -1,11 +1,11 @@
 package com.kood.homework.translationapi.util;
 
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.springframework.stereotype.Component;
-
 import com.google.common.util.concurrent.RateLimiter;
+
 
 /**
  * IpRateLimiter provides rate-limiting functionality based on IP addresses for
@@ -32,6 +32,7 @@ public class IpRateLimiter {
      */
     private final Map<String, Map<String, RateLimiter>> endpointRateLimiters = new ConcurrentHashMap<>();
 
+
     /**
      * Attempts to acquire a permit from the rate limiter associated with the
      * specified endpoint and IP address.
@@ -44,7 +45,6 @@ public class IpRateLimiter {
      * @return {@code true} if a permit was acquired successfully, {@code false}
      *         otherwise.
      */
-
     public boolean tryAcquire(String endpoint, String ipAddress, double permitsPerSecond) {
         Map<String, RateLimiter> ipRateLimiters = endpointRateLimiters.computeIfAbsent(endpoint,
                 k -> new ConcurrentHashMap<>());
