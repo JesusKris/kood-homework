@@ -5,14 +5,13 @@ import java.net.InetAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.Environment;
 import com.kood.homework.translationapi.model.ProjectLogger;
 import io.micrometer.common.util.StringUtils;
 
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@SpringBootApplication
 public class TranslationapiApplication implements ApplicationListener<ApplicationReadyEvent> {
 
     @Autowired
