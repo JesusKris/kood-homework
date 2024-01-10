@@ -1,20 +1,20 @@
 package com.kood.homework.translationapi.model;
 
+
 import java.util.Date;
 import java.util.HashMap;
 import org.springframework.http.HttpStatus;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+
 /**
  * Represents a success response in the API.
  * <p>
  * This class is designed to encapsulate details of a successful API response,
- * including
- * success code, type, details, timestamp, path, API version, and optional data.
- * It is
- * intended for serialization to JSON and implements the {@link ApiResponse}
- * interface.
+ * including success code, type, details, timestamp, path, API version, and optional data.
+ * <p>
+ * It is intended for serialization to JSON and implements the {@link ApiResponse} interface.
  * </p>
  * 
  * <p>
@@ -28,6 +28,7 @@ public class SuccessResponse {
      */
     private final Body body;
 
+
     /**
      * Constructs a SuccessResponse instance with the specified success details.
      *
@@ -40,14 +41,15 @@ public class SuccessResponse {
         this.body = new Body(httpStatus.value(), httpStatus.getReasonPhrase(), details, originalUrl, apiVersion);
     }
 
+
     /**
      * Converts this SuccessResponse into its JSON representation as an ApiResponse.
      *
      * <p>
-     * This method is responsible for transforming the current SuccessResponse
-     * object into a format
-     * suitable for inclusion in API responses. It returns an ApiResponse
-     * representing the encapsulated
+     * This method is responsible for transforming the current SuccessResponse object into a format
+     * suitable for inclusion in API responses. 
+     * <p>
+     * It returns an ApiResponse representing the encapsulated
      * success details, complying with the expected JSON structure.
      * </p>
      *
@@ -60,6 +62,7 @@ public class SuccessResponse {
     public void addData(String key, Object data) {
         this.body.addData(key, data);
     }
+
 
     @JsonTypeName("body")
     @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
