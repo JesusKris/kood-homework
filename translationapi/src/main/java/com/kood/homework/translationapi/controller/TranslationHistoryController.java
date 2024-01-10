@@ -44,6 +44,13 @@ public class TranslationHistoryController {
     private int translationHistoryRateLimit;
 
 
+    /**
+     * Endpoint to get the translation history.
+     *
+     * @param request  The HTTP servlet request.
+     * @param response The HTTP servlet response.
+     * @return ResponseEntity containing the API response.
+     */
     @GetMapping
     public ResponseEntity<ApiResponse> getTranslationHistory(HttpServletRequest request, HttpServletResponse response) {
 
@@ -57,6 +64,7 @@ public class TranslationHistoryController {
                         getUriWithParameters(request), apiVersion).toJson(),
                         HttpStatus.TOO_MANY_REQUESTS);
             }
+            
 
             List<TranslationEntity> translationHistory = translationHistoryService
                     .getTranslationHistory(new TranslationHistoryParameter(request.getParameter("order")));
