@@ -1,20 +1,21 @@
 package com.kood.homework.translationapi.model;
 
+
 import java.util.Date;
-
 import org.springframework.http.HttpStatus;
-
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+
 /**
  * Represents an error response in the API.
+ * 
  * <p>
  * This class is designed to encapsulate details of an error response, including
- * error code,
- * type, details, timestamp, path, and API version. It is intended for
- * serialization to JSON
- * and implements the {@link ApiResponse} interface.
+ * error code, type, details, timestamp, path, and API version. 
+ * 
+ * <p>
+ * It is intended for serialization to JSON and implements the {@link ApiResponse} interface.
  * </p>
  * 
  * <p>
@@ -28,6 +29,7 @@ public class ErrorResponse {
      * The encapsulated error details.
      */
     private final Error error;
+
 
     /**
      * Constructs an ErrorResponse instance with the specified error details.
@@ -43,6 +45,7 @@ public class ErrorResponse {
         this.error = new Error(httpStatus.value(), httpStatus.getReasonPhrase(), details, originalUrl, apiVersion,
                 new Date());
     }
+
 
     /**
      * Converts this ErrorResponse into its JSON representation as an ApiResponse.
@@ -61,6 +64,7 @@ public class ErrorResponse {
         return this.error;
     }
 
+    
     @JsonTypeName("error")
     @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
     public static class Error implements ApiResponse {
