@@ -5,6 +5,14 @@ import java.time.ZoneOffset;
 import java.time.Instant;
 import java.util.Date;
 
+
+/**
+ * Entity representing translations stored in the database.
+ * 
+ * <p>
+ * <strong>Author:</strong> JesusKris
+ * </p> 
+ */
 @Entity
 @Table(name = "Translation")
 public class TranslationEntity {
@@ -33,14 +41,16 @@ public class TranslationEntity {
     @Temporal(jakarta.persistence.TemporalType.TIMESTAMP)
     private Date updatedAt;
 
+
+    // Default constructor for JPA
     public TranslationEntity() {}
+
 
     public TranslationEntity(String input, String translation, String sourceLang, String targetLang) {
         this.input = input;
         this.translation = translation;
         this.sourceLang = sourceLang;
         this.targetLang = targetLang;
-
     }
 
     @PrePersist
@@ -54,39 +64,31 @@ public class TranslationEntity {
         updatedAt = Date.from(Instant.now().atOffset(ZoneOffset.UTC).toInstant());
     }
 
-    // Getter for 'id'
     public Long getId() {
         return id;
     }
 
-    // Getter for 'input'
     public String getInput() {
         return input;
     }
 
-    // Getter for 'translation'
     public String getTranslation() {
         return translation;
     }
 
-    // Getter for 'sourceLang'
     public String getSourceLang() {
         return sourceLang;
     }
 
-    // Getter for 'targetLang'
     public String getTargetLang() {
         return targetLang;
     }
 
-    // Getter for 'createdAt'
     public Date getCreatedAt() {
         return createdAt;
     }
 
-    // Getter for 'updatedAt'
     public Date getUpdatedAt() {
         return updatedAt;
     }
-
 }
