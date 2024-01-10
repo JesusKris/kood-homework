@@ -1,5 +1,6 @@
 package com.kood.homework.translationapi.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -11,12 +12,20 @@ import com.kood.homework.translationapi.model.ApiResponse;
 import com.kood.homework.translationapi.model.ErrorResponse;
 import com.kood.homework.translationapi.model.SuccessResponse;
 import com.kood.homework.translationapi.model.TranslationParameter;
-import com.kood.homework.translationapi.service.DeepLTranslatorService;
+import com.kood.homework.translationapi.service.DeeplTranslatorService;
 import com.kood.homework.translationapi.service.TranslationHistoryService;
 import com.kood.homework.translationapi.util.IpRateLimiter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+
+/**
+ * Controller handling requests related to translation process.
+ * 
+ * <p>
+ * <strong>Author:</strong> JesusKris
+ * </p>
+ */
 @RestController
 @RequestMapping("/api/translate")
 public class TranslationController {
@@ -25,16 +34,25 @@ public class TranslationController {
         private IpRateLimiter ipRateLimiter;
 
         @Autowired
-        private DeepLTranslatorService deepLTranslatorService;
+        private DeeplTranslatorService deepLTranslatorService;
 
         @Autowired
         private TranslationHistoryService translationHistoryService;
 
-        @Value("${api.version}")
+        @Value("${translation.api.version}")
         private String apiVersion;
 
-        private final int translateTextRateLimit = 25;
+        @Value("${translation.api.translate.ratelimit}")
+        private int translateTextRateLimit;
 
+
+        /**
+         * Endpoint to translate input text.
+         *
+         * @param request  The HTTP servlet request.
+         * @param response The HTTP servlet response.
+         * @return ResponseEntity containing the API response.
+         */
         @PostMapping
         public ResponseEntity<ApiResponse> translate(HttpServletRequest request, HttpServletResponse response) {
 
@@ -49,10 +67,12 @@ public class TranslationController {
                                                 HttpStatus.TOO_MANY_REQUESTS);
                         }
 
+
                         String input = request.getParameter("input");
                         String source_lang = request.getParameter("source_lang");
                         String target_lang = request.getParameter("target_lang");
 
+                        
                         String translatedText = deepLTranslatorService
                                         .translateText(new TranslationParameter(input,
                                                         source_lang,
@@ -69,12 +89,14 @@ public class TranslationController {
 
                         return new ResponseEntity<ApiResponse>(successResponse.toJson(), HttpStatus.OK);
 
+
                 } catch (IllegalArgumentException e) {
                         return new ResponseEntity<ApiResponse>(
                                         new ErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(),
                                                         getUriWithParameters(request),
                                                         apiVersion).toJson(),
                                         HttpStatus.BAD_REQUEST);
+
 
                 } catch (Exception e) {
                         return new ResponseEntity<ApiResponse>(
