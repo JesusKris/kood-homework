@@ -52,17 +52,13 @@ public class DeeplTranslatorService {
     public String translateText(TranslationParameter translationRequest) throws Exception {
         logger.log(Level.INFO, "Attempting to translate a text..");
 
-        try {
-            TextResult translatedTextRes = translator.translateText(translationRequest.getInputText(),
-                    translationRequest.getSourceLanguage(),
-                    translationRequest.getTargetLanguage());
+        TextResult translatedTextRes = translator.translateText(translationRequest.getInputText(),
+                 translationRequest.getSourceLanguage(),
+                translationRequest.getTargetLanguage());
 
-            logger.log(Level.INFO, "Successfully translated a text..");
+        logger.log(Level.INFO, "Successfully translated a text..");
 
-            return translatedTextRes.getText();
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid input or target_language");
-        }
+        return translatedTextRes.getText();
     }
 
 
