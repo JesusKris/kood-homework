@@ -14,7 +14,7 @@ import com.kood.homework.translationapi.entity.TranslationEntity;
 import com.kood.homework.translationapi.model.ApiResponse;
 import com.kood.homework.translationapi.model.ErrorResponse;
 import com.kood.homework.translationapi.model.SuccessResponse;
-import com.kood.homework.translationapi.model.TranslationHistoryRequest;
+import com.kood.homework.translationapi.model.TranslationHistoryParameter;
 import com.kood.homework.translationapi.service.TranslationHistoryService;
 import com.kood.homework.translationapi.util.IpRateLimiter;
 
@@ -52,7 +52,7 @@ public class TranslationHistoryController {
             }
 
             List<TranslationEntity> translationHistory = translationHistoryService
-                    .getTranslationHistory(new TranslationHistoryRequest(request.getParameter("order")));
+                    .getTranslationHistory(new TranslationHistoryParameter(request.getParameter("order")));
 
             SuccessResponse successResponse = new SuccessResponse(HttpStatus.OK,
                     "Successfully recieved translation history",

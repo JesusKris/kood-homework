@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kood.homework.translationapi.model.ApiResponse;
 import com.kood.homework.translationapi.model.ErrorResponse;
 import com.kood.homework.translationapi.model.SuccessResponse;
-import com.kood.homework.translationapi.model.TranslationRequest;
+import com.kood.homework.translationapi.model.TranslationParameter;
 import com.kood.homework.translationapi.service.DeepLTranslatorService;
 import com.kood.homework.translationapi.service.TranslationHistoryService;
 import com.kood.homework.translationapi.util.IpRateLimiter;
@@ -54,7 +54,7 @@ public class TranslationController {
                         String target_lang = request.getParameter("target_lang");
 
                         String translatedText = deepLTranslatorService
-                                        .translateText(new TranslationRequest(input,
+                                        .translateText(new TranslationParameter(input,
                                                         source_lang,
                                                         target_lang));
 

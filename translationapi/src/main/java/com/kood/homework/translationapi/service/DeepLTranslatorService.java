@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.deepl.api.*;
-import com.kood.homework.translationapi.model.TranslationLanguageRequest;
-import com.kood.homework.translationapi.model.TranslationRequest;
+import com.kood.homework.translationapi.model.TranslationLanguageParameter;
+import com.kood.homework.translationapi.model.TranslationParameter;
 
 @Service
 public class DeepLTranslatorService {
@@ -17,7 +17,7 @@ public class DeepLTranslatorService {
         this.translator = new Translator(apiKey);
     }
 
-    public String translateText(TranslationRequest translationRequest) throws Exception {
+    public String translateText(TranslationParameter translationRequest) throws Exception {
         try {
 
             TextResult translatedTextRes = translator.translateText(translationRequest.getInputText(),
@@ -30,7 +30,7 @@ public class DeepLTranslatorService {
         }
     }
 
-    public Object getAvailaableLanguages(TranslationLanguageRequest languageRequest) throws Exception {
+    public Object getAvailaableLanguages(TranslationLanguageParameter languageRequest) throws Exception {
         try {
 
             List<Language> languageRes = "source".equals(languageRequest.getType()) ? translator.getSourceLanguages()

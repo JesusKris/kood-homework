@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import com.kood.homework.translationapi.entity.TranslationEntity;
-import com.kood.homework.translationapi.model.TranslationHistoryRequest;
+import com.kood.homework.translationapi.model.TranslationHistoryParameter;
 import com.kood.homework.translationapi.repository.TranslationRepository;
 
 @Service
@@ -19,7 +19,7 @@ public class TranslationHistoryService {
         translationRepository.save(translationEntity);
     }
 
-    public List<TranslationEntity> getTranslationHistory(TranslationHistoryRequest translationHistoryRequest) {
+    public List<TranslationEntity> getTranslationHistory(TranslationHistoryParameter translationHistoryRequest) {
         return "asc".equals(translationHistoryRequest.getOrder()) ? translationRepository.findAllByOrderByCreatedAtAsc() : translationRepository.findAllByOrderByCreatedAtDesc();
     }
 }

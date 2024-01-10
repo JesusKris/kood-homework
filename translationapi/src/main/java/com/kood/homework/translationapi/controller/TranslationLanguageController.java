@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kood.homework.translationapi.model.ApiResponse;
 import com.kood.homework.translationapi.model.ErrorResponse;
 import com.kood.homework.translationapi.model.SuccessResponse;
-import com.kood.homework.translationapi.model.TranslationLanguageRequest;
+import com.kood.homework.translationapi.model.TranslationLanguageParameter;
 import com.kood.homework.translationapi.service.DeepLTranslatorService;
 import com.kood.homework.translationapi.util.IpRateLimiter;
 
@@ -47,7 +47,7 @@ public class TranslationLanguageController {
                         getUriWithParameters(request), apiVersion).toJson(), null);
             }
 
-            TranslationLanguageRequest languageRequest = new TranslationLanguageRequest(request.getParameter("type"));
+            TranslationLanguageParameter languageRequest = new TranslationLanguageParameter(request.getParameter("type"));
 
             Object availableLanguages = deepLTranslatorService.getAvailaableLanguages(languageRequest);
 
