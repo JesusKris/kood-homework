@@ -2,6 +2,7 @@ package com.kood.homework.translationapi.model;
 
 import java.util.Date;
 import java.util.HashMap;
+import org.springframework.http.HttpStatus;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -30,13 +31,13 @@ public class SuccessResponse {
     /**
      * Constructs a SuccessResponse instance with the specified success details.
      *
-     * @param responseType The response type indicating the nature of the success.
+     * @param httpStatus   The httpStatus indicating the nature of the success.
      * @param details      Additional details describing the success.
      * @param originalUrl  The original URL that resulted in the success.
      * @param apiVersion   The API version associated with the success.
      */
-    public SuccessResponse(ResponseType responseType, String details, String originalUrl, String apiVersion) {
-        this.body = new Body(responseType.getCode(), responseType.getType(), details, originalUrl, apiVersion);
+    public SuccessResponse(HttpStatus httpStatus, String details, String originalUrl, String apiVersion) {
+        this.body = new Body(httpStatus.value(), httpStatus.getReasonPhrase(), details, originalUrl, apiVersion);
     }
 
     /**
@@ -54,6 +55,10 @@ public class SuccessResponse {
      */
     public ApiResponse toJson() {
         return this.body;
+    }
+
+    public void addData(String key, Object data) {
+        this.body.addData(key, data);
     }
 
     @JsonTypeName("body")

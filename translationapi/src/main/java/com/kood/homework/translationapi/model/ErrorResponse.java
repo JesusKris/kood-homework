@@ -1,6 +1,9 @@
 package com.kood.homework.translationapi.model;
 
 import java.util.Date;
+
+import org.springframework.http.HttpStatus;
+
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -29,15 +32,15 @@ public class ErrorResponse {
     /**
      * Constructs an ErrorResponse instance with the specified error details.
      *
-     * @param responseType The response type indicating the nature of the error.
+     * @param httpStatus   The httpStatus indicating the nature of the error.
      * @param details      Additional details describing the error.
      * @param originalUrl  The original URL with query parameters that resulted in
      *                     the error.
      * @param apiVersion   The API version associated with the error.
      * 
      */
-    public ErrorResponse(ResponseType responseType, String details, String originalUrl, String apiVersion) {
-        this.error = new Error(responseType.getCode(), responseType.getType(), details, originalUrl, apiVersion,
+    public ErrorResponse(HttpStatus httpStatus, String details, String originalUrl, String apiVersion) {
+        this.error = new Error(httpStatus.value(), httpStatus.getReasonPhrase(), details, originalUrl, apiVersion,
                 new Date());
     }
 
