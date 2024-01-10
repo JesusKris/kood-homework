@@ -1,7 +1,7 @@
 package com.kood.homework.translationapi.controller;
 
-import java.util.List;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.kood.homework.translationapi.entity.TranslationEntity;
 import com.kood.homework.translationapi.model.ApiResponse;
 import com.kood.homework.translationapi.model.ErrorResponse;
@@ -17,10 +16,17 @@ import com.kood.homework.translationapi.model.SuccessResponse;
 import com.kood.homework.translationapi.model.TranslationHistoryParameter;
 import com.kood.homework.translationapi.service.TranslationHistoryService;
 import com.kood.homework.translationapi.util.IpRateLimiter;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+
+/**
+ * Controller handling requests related to translation history.
+ * 
+ * <p>
+ * <strong>Author:</strong> JesusKris
+ * </p> 
+ */
 @RestController
 @RequestMapping("/api/translate/history")
 public class TranslationHistoryController {
@@ -31,18 +37,19 @@ public class TranslationHistoryController {
     @Autowired
     private TranslationHistoryService translationHistoryService;
 
-    @Value("${api.version}")
+    @Value("${translation.api.version}")
     private String apiVersion;
 
-    private final int translationHistoryRateLimit = 25;
+    @Value("${translation.api.history.ratelimit}")
+    private int translationHistoryRateLimit;
+
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getTranslationHistory(HttpServletRequest request,
-            HttpServletResponse response) {
+    public ResponseEntity<ApiResponse> getTranslationHistory(HttpServletRequest request, HttpServletResponse response) {
 
         String ipAddress = request.getRemoteAddr();
-        try {
 
+        try {
             if (!ipRateLimiter.tryAcquire("/api/translate", ipAddress, translationHistoryRateLimit)) {
                 return new ResponseEntity<ApiResponse>(new ErrorResponse(HttpStatus.TOO_MANY_REQUESTS,
                         "Rate limit exceeded. Current rate limit: "
@@ -62,6 +69,7 @@ public class TranslationHistoryController {
 
             return new ResponseEntity<ApiResponse>(successResponse.toJson(), HttpStatus.OK);
 
+
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<ApiResponse>(
                     new ErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(),
@@ -69,6 +77,7 @@ public class TranslationHistoryController {
                             apiVersion).toJson(),
                     HttpStatus.BAD_REQUEST);
 
+                    
         } catch (Exception e) {
             System.out.print(e);
             return new ResponseEntity<ApiResponse>(
