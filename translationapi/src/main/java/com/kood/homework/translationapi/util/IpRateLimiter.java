@@ -2,6 +2,9 @@ package com.kood.homework.translationapi.util;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.springframework.stereotype.Component;
+
 import com.google.common.util.concurrent.RateLimiter;
 
 /**
@@ -18,6 +21,7 @@ import com.google.common.util.concurrent.RateLimiter;
  * <strong>Author:</strong> JesusKris
  * </p>
  */
+@Component
 public class IpRateLimiter {
 
     /**
