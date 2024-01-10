@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.kood.homework.translationapi.model.ApiResponse;
 import com.kood.homework.translationapi.model.ErrorResponse;
 
-
+/**
+ * 
+ * @author JesusKris
+  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
