@@ -1,6 +1,8 @@
 package com.kood.homework.translationapi.model;
 
+
 import java.lang.System.Logger.Level;
+
 
 /**
  * A generic logging interface for providing abstraction over logging
@@ -13,6 +15,7 @@ import java.lang.System.Logger.Level;
  */
 public interface ProjectLogger {
 
+
     /**
      * Logs a message at the specified log level.
      *
@@ -23,6 +26,7 @@ public interface ProjectLogger {
      */
     void log(Level level, String message);
 
+    
     /**
      * Logs a message at the specified log level with an associated throwable.
      *
