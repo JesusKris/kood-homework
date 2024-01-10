@@ -1,9 +1,10 @@
-package com.kood.homework.translationapi.util;
+package com.kood.homework.translationapi.model;
 
 import java.lang.System.Logger.Level;
 
 /**
- * A generic logging interface for providing abstraction over logging dependencies.
+ * A generic logging interface for providing abstraction over logging
+ * dependencies.
  * 
  * <p>
  * The log levels are represented by the {@link java.util.logging.Level} enum.
@@ -34,7 +35,3 @@ public interface ProjectLogger {
      */
     void log(Level level, String message, Throwable throwable);
 }
-
-
-
-
