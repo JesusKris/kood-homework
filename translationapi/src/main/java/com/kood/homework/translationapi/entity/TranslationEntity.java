@@ -22,23 +22,23 @@ public class TranslationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "input_text")
     private String inputText;
 
     @Column(nullable = false)
     private String translation;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "source_lang")
     private String sourceLang;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "target_lang")
     private String targetLang;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, name = "created_at")
     @Temporal(jakarta.persistence.TemporalType.TIMESTAMP)
     private Date createdAt;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "updated_at")
     @Temporal(jakarta.persistence.TemporalType.TIMESTAMP)
     private Date updatedAt;
 
