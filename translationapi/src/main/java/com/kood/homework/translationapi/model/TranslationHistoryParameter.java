@@ -1,6 +1,9 @@
 package com.kood.homework.translationapi.model;
 
 
+import java.util.Set;
+
+
 /**
  * Represents parameters for translation history requests.
  * It includes the order parameter to specify the sorting order (asc or desc).
@@ -15,7 +18,9 @@ package com.kood.homework.translationapi.model;
 public class TranslationHistoryParameter {
     private final String order;
 
+    private static final Set<String> VALID_ORDERS = Set.of("asc", "desc");
 
+    
     /**
      * Constructs a new TranslationHistoryParameter with the specified order.
      *
@@ -35,6 +40,6 @@ public class TranslationHistoryParameter {
     }
 
     private static boolean isValidOrder(String order) {
-        return "desc".equals(order) || "asc".equals(order);
+        return VALID_ORDERS.contains(order);
     }
 }

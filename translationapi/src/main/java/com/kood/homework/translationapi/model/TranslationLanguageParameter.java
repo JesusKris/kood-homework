@@ -1,6 +1,9 @@
 package com.kood.homework.translationapi.model;
 
 
+import java.util.Set;
+
+
 /**
  * Represents parameters for language-related requests.
  * It includes the type of language group (source or target).
@@ -14,6 +17,8 @@ package com.kood.homework.translationapi.model;
  */
 public class TranslationLanguageParameter {
     private final String type;
+
+    private static final Set<String> VALID_TYPES = Set.of("source", "target");
 
 
     /**
@@ -37,6 +42,6 @@ public class TranslationLanguageParameter {
     }
 
     private static boolean isValidType(String type) {
-        return "source".equals(type) || "target".equals(type);
+        return VALID_TYPES.contains(type);
     }
 }
