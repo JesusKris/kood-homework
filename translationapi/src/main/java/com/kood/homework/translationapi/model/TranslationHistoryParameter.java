@@ -28,7 +28,7 @@ public class TranslationHistoryParameter {
      * @throws IllegalArgumentException If the order parameter is invalid.
      */
     public TranslationHistoryParameter(String order) throws IllegalArgumentException {
-        if (!isValidOrder(order)) {
+        if (order == null || !isValidOrder(order)) {
             throw new IllegalArgumentException("Invalid order parameter");
         }
 
