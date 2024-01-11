@@ -3,6 +3,8 @@ package com.kood.homework.translationapi.model;
 
 import java.lang.System.Logger.Level;
 
+import org.springframework.stereotype.Service;
+
 
 /**
  * A generic logging interface for providing abstraction over logging
@@ -13,6 +15,7 @@ import java.lang.System.Logger.Level;
  * <p>
  * <strong>Author:</strong> JesusKris
  */
+@Service
 public interface ProjectLogger {
 
 
