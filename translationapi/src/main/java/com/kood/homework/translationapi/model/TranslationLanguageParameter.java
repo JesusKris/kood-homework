@@ -30,7 +30,7 @@ public class TranslationLanguageParameter {
     public TranslationLanguageParameter(String type)
             throws IllegalArgumentException {
 
-        if (!isValidType(type)) {
+        if (type == null || !isValidType(type)) {
             throw new IllegalArgumentException("Invalid language group type");
         }
 
