@@ -1,5 +1,6 @@
 package com.kood.homework.translationapi.entity;
 
+
 import jakarta.persistence.*;
 import java.time.ZoneOffset;
 import java.time.Instant;
@@ -11,7 +12,7 @@ import java.util.Date;
  * 
  * <p>
  * <strong>Author:</strong> JesusKris
- * </p> 
+ * </p>
  */
 @Entity
 @Table(name = "Translation")
@@ -22,7 +23,7 @@ public class TranslationEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String input;
+    private String inputText;
 
     @Column(nullable = false)
     private String translation;
@@ -41,18 +42,6 @@ public class TranslationEntity {
     @Temporal(jakarta.persistence.TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-
-    // Default constructor for JPA
-    public TranslationEntity() {}
-
-
-    public TranslationEntity(String input, String translation, String sourceLang, String targetLang) {
-        this.input = input;
-        this.translation = translation;
-        this.sourceLang = sourceLang;
-        this.targetLang = targetLang;
-    }
-
     @PrePersist
     protected void onCreate() {
         createdAt = Date.from(Instant.now().atOffset(ZoneOffset.UTC).toInstant());
@@ -64,12 +53,40 @@ public class TranslationEntity {
         updatedAt = Date.from(Instant.now().atOffset(ZoneOffset.UTC).toInstant());
     }
 
+    public void setInputText(String inputText) throws IllegalArgumentException {
+        if (!isValidInput(inputText)) {
+            throw new IllegalArgumentException("Invalid inputText");
+        }
+        this.inputText = inputText;
+    }
+
+    public void setTranslation(String translation) throws IllegalArgumentException {
+        if (!isValidInput(translation)) {
+            throw new IllegalArgumentException("Invalid translation");
+        }
+        this.translation = translation;
+    }
+
+    public void setSourceLang(String sourceLang) throws IllegalArgumentException {
+        if (!isValidInput(sourceLang)) {
+            throw new IllegalArgumentException("Invalid sourceLang");
+        }
+        this.sourceLang = sourceLang;
+    }
+
+    public void setTargetLang(String targetLang) throws IllegalArgumentException {
+        if (!isValidInput(targetLang)) {
+            throw new IllegalArgumentException("Invalid targetLang");
+        }
+        this.targetLang = targetLang;
+    }
+
     public Long getId() {
         return id;
     }
 
-    public String getInput() {
-        return input;
+    public String getInputText() {
+        return inputText;
     }
 
     public String getTranslation() {
@@ -90,5 +107,9 @@ public class TranslationEntity {
 
     public Date getUpdatedAt() {
         return updatedAt;
+    }
+
+    private boolean isValidInput(String input) throws IllegalArgumentException {
+        return input != null && !input.isEmpty();
     }
 }
