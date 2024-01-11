@@ -82,7 +82,7 @@ public class TranslationHistoryController {
                     .getTranslationHistory(new TranslationHistoryParameter(request.getParameter("order")));
 
             SuccessResponse successResponse = new SuccessResponse(HttpStatus.OK,
-                    "Successfully recieved translation history",
+                    "Successfully received translation history",
                     getUriWithParameters(request), apiVersion);
 
             successResponse.addData("translationHistory", translationHistory);
