@@ -46,7 +46,7 @@ public class TranslationLanguageController {
     @Value("${translation.api.language.ratelimit}")
     private int availableLanguagesRateLimit;
 
-    private static final String API_LANGUAGE_PATH = "/api/translate/language";
+    private static final String API_LANGUAGE_PATH = "/api/translate/languages";
 
 
     /**
