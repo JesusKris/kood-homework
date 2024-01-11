@@ -19,6 +19,10 @@ public class LogBackLogger implements ProjectLogger {
 
     
     public LogBackLogger(Class<?> clazz) {
+        if (clazz == null) {
+            throw new IllegalArgumentException("Class cannot be null");
+        }
+
         this.logger = LoggerFactory.getLogger(clazz);
     }
 
