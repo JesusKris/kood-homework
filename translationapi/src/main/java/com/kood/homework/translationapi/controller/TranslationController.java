@@ -78,13 +78,13 @@ public class TranslationController {
                         }
 
 
-                        String input = request.getParameter("input");
+                        String inputText = request.getParameter("input_text");
                         String source_lang = request.getParameter("source_lang");
                         String target_lang = request.getParameter("target_lang");
 
                         
                         String translatedText = deepLTranslatorService
-                                        .translateText(new TranslationParameter(input,
+                                        .translateText(new TranslationParameter(inputText,
                                                         source_lang,
                                                         target_lang));
 
@@ -94,7 +94,7 @@ public class TranslationController {
 
                         successResponse.addData("translation", translatedText);
 
-                        translationHistoryService.saveTranslation(input, translatedText, source_lang,
+                        translationHistoryService.saveTranslation(inputText, translatedText, source_lang,
                                         target_lang);
 
                         return new ResponseEntity<ApiResponse>(successResponse.toJson(), HttpStatus.OK);
