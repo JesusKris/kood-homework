@@ -42,7 +42,12 @@ public class TranslationHistoryService {
     public void saveTranslation(String input, String translation, String sourceLang, String targetLang) throws Exception {
         logger.log(Level.INFO, "Attempting to save a new translation..");
 
-        TranslationEntity translationEntity = new TranslationEntity(input, translation, sourceLang, targetLang);
+        TranslationEntity translationEntity = new TranslationEntity();
+        translationEntity.setInputText(input);
+        translationEntity.setTranslation(translation);
+        translationEntity.setSourceLang(sourceLang);
+        translationEntity.setTargetLang(targetLang);
+
         translationRepository.save(translationEntity);
 
         logger.log(Level.INFO, "Successfully saved a new translation..");
