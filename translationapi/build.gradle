@@ -24,6 +24,7 @@ dependencies {
 	implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
 	implementation "com.deepl.api:deepl-java:1.4.0"
 	implementation("com.google.guava:guava:33.0.0-jre")
+	testImplementation 'com.h2database:h2'
 }
 
 tasks.named('test') {
