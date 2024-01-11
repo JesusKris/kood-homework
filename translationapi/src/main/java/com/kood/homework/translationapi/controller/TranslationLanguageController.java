@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.kood.homework.translationapi.model.ApiResponse;
 import com.kood.homework.translationapi.model.ErrorResponse;
+import com.kood.homework.translationapi.model.ProjectLogger;
 import com.kood.homework.translationapi.model.SuccessResponse;
 import com.kood.homework.translationapi.model.TranslationLanguageParameter;
 import com.kood.homework.translationapi.service.DeeplTranslatorService;
 import com.kood.homework.translationapi.util.IpRateLimiter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.lang.System.Logger.Level;
 
 
 /**
@@ -35,11 +37,16 @@ public class TranslationLanguageController {
     @Autowired
     private DeeplTranslatorService deepLTranslatorService;
 
+    @Autowired
+    private ProjectLogger logger;
+
     @Value("${translation.api.version}")
     private String apiVersion;
 
     @Value("${translation.api.language.ratelimit}")
     private int availableLanguagesRateLimit;
+
+    private static final String API_LANGUAGE_PATH = "/api/translate/language";
 
 
     /**
@@ -54,8 +61,12 @@ public class TranslationLanguageController {
 
         String ipAddress = request.getRemoteAddr();
 
+        logger.log(Level.INFO, "Request recieved: " + request.getMethod() + " " + getUriWithParameters(request) + " " + request.getProtocol());
+
         try {
-            if (!ipRateLimiter.tryAcquire("/api/language", ipAddress, availableLanguagesRateLimit)) {
+            if (!ipRateLimiter.tryAcquire(API_LANGUAGE_PATH, ipAddress, availableLanguagesRateLimit)) {
+                logger.log(Level.WARNING, ipAddress + " is exceeding rate limit at " +  API_LANGUAGE_PATH);
+
                 return new ResponseEntity<ApiResponse>(new ErrorResponse(HttpStatus.TOO_MANY_REQUESTS,
                         "Rate limit exceeded. Current rate limit: "
                                 + String.valueOf(availableLanguagesRateLimit),
@@ -79,6 +90,8 @@ public class TranslationLanguageController {
 
 
         } catch (IllegalArgumentException e) {
+            logger.log(Level.WARNING, e.getMessage(), e);
+        
             return new ResponseEntity<ApiResponse>(
                     new ErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(),
                             getUriWithParameters(request),
@@ -87,6 +100,8 @@ public class TranslationLanguageController {
 
 
         } catch (Exception e) {
+            logger.log(Level.ERROR, e.getMessage(), e);
+
             return new ResponseEntity<ApiResponse>(
                     new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error",
                             getUriWithParameters(request),

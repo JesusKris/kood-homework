@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kood.homework.translationapi.entity.TranslationEntity;
 import com.kood.homework.translationapi.model.ApiResponse;
 import com.kood.homework.translationapi.model.ErrorResponse;
+import com.kood.homework.translationapi.model.ProjectLogger;
 import com.kood.homework.translationapi.model.SuccessResponse;
 import com.kood.homework.translationapi.model.TranslationHistoryParameter;
 import com.kood.homework.translationapi.service.TranslationHistoryService;
 import com.kood.homework.translationapi.util.IpRateLimiter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.lang.System.Logger.Level;
 
 
 /**
@@ -37,11 +39,16 @@ public class TranslationHistoryController {
     @Autowired
     private TranslationHistoryService translationHistoryService;
 
+    @Autowired
+    private ProjectLogger logger;
+
     @Value("${translation.api.version}")
     private String apiVersion;
 
     @Value("${translation.api.history.ratelimit}")
     private int translationHistoryRateLimit;
+
+    private static final String API_HISTORY_PATH = "/api/translate/history";
 
 
     /**
@@ -56,8 +63,13 @@ public class TranslationHistoryController {
 
         String ipAddress = request.getRemoteAddr();
 
+        logger.log(Level.INFO, "Request recieved: " + request.getMethod() + " " + getUriWithParameters(request) + " " + request.getProtocol());
+
         try {
-            if (!ipRateLimiter.tryAcquire("/api/translate", ipAddress, translationHistoryRateLimit)) {
+            if (!ipRateLimiter.tryAcquire(API_HISTORY_PATH, ipAddress, translationHistoryRateLimit)) {
+                logger.log(Level.WARNING, ipAddress + " is hitting rate limit at " +  API_HISTORY_PATH);
+
+
                 return new ResponseEntity<ApiResponse>(new ErrorResponse(HttpStatus.TOO_MANY_REQUESTS,
                         "Rate limit exceeded. Current rate limit: "
                                 + String.valueOf(translationHistoryRateLimit),
@@ -79,6 +91,8 @@ public class TranslationHistoryController {
 
 
         } catch (IllegalArgumentException e) {
+           logger.log(Level.ERROR, e.getMessage(), e);
+
             return new ResponseEntity<ApiResponse>(
                     new ErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(),
                             getUriWithParameters(request),
@@ -87,7 +101,8 @@ public class TranslationHistoryController {
 
                     
         } catch (Exception e) {
-            System.out.print(e);
+            logger.log(Level.WARNING, e.getMessage(), e);
+
             return new ResponseEntity<ApiResponse>(
                     new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error",
                             getUriWithParameters(request),

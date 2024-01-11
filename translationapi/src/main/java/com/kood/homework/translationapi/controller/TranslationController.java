@@ -1,6 +1,8 @@
 package com.kood.homework.translationapi.controller;
 
 
+import java.lang.System.Logger.Level;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.kood.homework.translationapi.model.ApiResponse;
 import com.kood.homework.translationapi.model.ErrorResponse;
+import com.kood.homework.translationapi.model.ProjectLogger;
 import com.kood.homework.translationapi.model.SuccessResponse;
 import com.kood.homework.translationapi.model.TranslationParameter;
 import com.kood.homework.translationapi.service.DeeplTranslatorService;
@@ -39,11 +42,16 @@ public class TranslationController {
         @Autowired
         private TranslationHistoryService translationHistoryService;
 
+        @Autowired
+        private ProjectLogger logger;
+
         @Value("${translation.api.version}")
         private String apiVersion;
 
         @Value("${translation.api.translate.ratelimit}")
         private int translateTextRateLimit;
+
+        private static final String API_TRANSLATE_PATH = "/api/translate";
 
 
         /**
@@ -58,8 +66,10 @@ public class TranslationController {
 
                 String ipAddress = request.getRemoteAddr();
 
+                logger.log(Level.INFO, "Request recieved: " + request.getMethod() + " " + getUriWithParameters(request) + " " + request.getProtocol());
+
                 try {
-                        if (!ipRateLimiter.tryAcquire("/api/translate", ipAddress, translateTextRateLimit)) {
+                        if (!ipRateLimiter.tryAcquire(API_TRANSLATE_PATH, ipAddress, translateTextRateLimit)) {
                                 return new ResponseEntity<ApiResponse>(new ErrorResponse(HttpStatus.TOO_MANY_REQUESTS,
                                                 "Rate limit exceeded. Current rate limit: "
                                                                 + String.valueOf(translateTextRateLimit),
@@ -91,6 +101,8 @@ public class TranslationController {
 
 
                 } catch (IllegalArgumentException e) {
+                        logger.log(Level.ERROR, e.getMessage(), e);
+
                         return new ResponseEntity<ApiResponse>(
                                         new ErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(),
                                                         getUriWithParameters(request),
@@ -99,6 +111,8 @@ public class TranslationController {
 
 
                 } catch (Exception e) {
+                        logger.log(Level.ERROR, e.getMessage(), e);
+
                         return new ResponseEntity<ApiResponse>(
                                         new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error",
                                                         getUriWithParameters(request),
