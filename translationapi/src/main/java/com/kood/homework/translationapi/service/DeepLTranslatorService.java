@@ -4,7 +4,6 @@ package com.kood.homework.translationapi.service;
 import java.util.List;
 import java.lang.System.Logger.Level;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.deepl.api.*;
 import com.kood.homework.translationapi.model.ProjectLogger;
@@ -29,16 +28,9 @@ public class DeeplTranslatorService {
     private ProjectLogger logger;
 
     
-    /**
-     * Constructs a DeeplTranslatorService with the provided API key.
-     *
-     * @param apiKey The API key for accessing the DeepL translation service.
-     * 
-     * @implNote Due to Translator getting initiated before Spring Boot injects class fields
-     * the deepl api key will be injected via constructor.
-     */
-    public DeeplTranslatorService(@Value("${translation.api.deepl.key}") String apiKey) {
-        this.translator = new Translator(apiKey);
+    public DeeplTranslatorService(Translator translator,  ProjectLogger logger) {
+        this.translator = translator;
+        this.logger = logger;
     }
 
 
