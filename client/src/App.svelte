@@ -3,8 +3,6 @@
   import { routes } from "./routes/routes";
 </script>
 
-<main>
+<main class="default-background__dots w-full h-full">
   <Router {routes} />
 </main>
-
-<style></style>
