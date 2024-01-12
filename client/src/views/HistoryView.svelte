@@ -2,8 +2,9 @@
     // @ts-nocheck
 
     import NavBar from "../components/NavBar.svelte";
-
     import { onMount } from "svelte";
+    import { TRANSLATION_API } from "../main";
+
 
     let translationHistory = [];
     let error = null;
@@ -13,7 +14,7 @@
     const fetchData = async () => {
         try {
             const response = await fetch(
-                `http://localhost:8070/api/translate/history?order=${order}`,
+                `${TRANSLATION_API}/api/translate/history?order=${order}`,
             );
             const result = await response.json();
 

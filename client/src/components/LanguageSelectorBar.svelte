@@ -3,6 +3,7 @@
 
     import { onMount } from "svelte";
     import { sourceLanguage, targetLanguage, updateSourceLanguage, updateTargetLanguage } from '../stores/availableLanguages';
+    import { TRANSLATION_API } from "../main";
 
 
     let targetDropdownVisible = false;
@@ -13,10 +14,10 @@
 
     onMount(async () => {
         const targetResponse = await fetch(
-            "http://localhost:8070/api/translate/languages?type=target",
+            `${TRANSLATION_API}/api/translate/languages?type=target`,
         );
         const sourceResponse = await fetch(
-            "http://localhost:8070/api/translate/languages?type=source",
+            `${TRANSLATION_API}/api/translate/languages?type=source`,
         );
 
         const targetData = await targetResponse.json();

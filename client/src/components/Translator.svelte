@@ -1,12 +1,14 @@
 <script>
     // @ts-nocheck
+    
+    import { TRANSLATION_API } from "../main";
     import {
         sourceLanguage,
         targetLanguage,
     } from "../stores/availableLanguages";
-
     import LanguageSelectorBar from "./LanguageSelectorBar.svelte";
 
+    
     let debounceTimer;
 
     function debounce(func, delay) {
@@ -24,7 +26,7 @@
                 return;
             }
 
-            const apiEndpoint = `http://localhost:8070/api/translate?input_text=${sourceText}&source_lang=${$sourceLanguage.code}&target_lang=${$targetLanguage.code}`;
+            const apiEndpoint = `${TRANSLATION_API}/api/translate?input_text=${sourceText}&source_lang=${$sourceLanguage.code}&target_lang=${$targetLanguage.code}`;
             const response = await fetch(apiEndpoint, {
                 method: "POST",
                 headers: {
