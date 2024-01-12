@@ -22,10 +22,10 @@ public class TranslationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "input_text")
+    @Column(nullable = false, name = "input_text", columnDefinition = "TEXT")
     private String inputText;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String translation;
 
     @Column(nullable = false, name = "source_lang")
