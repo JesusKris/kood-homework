@@ -53,3 +53,7 @@ npm run install
 
 npm run dev
 ```
+
+Image of the app
+
+![image of the app](image.png)
